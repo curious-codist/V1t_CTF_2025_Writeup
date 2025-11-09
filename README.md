@@ -69,3 +69,31 @@ From these comparision instructions, I extracted s[3] to s[10] which is {my_b4D}
 
 ## Flag - v1t{my_b4D}
 
+# Challege 3 - Duck RPG(Rev)
+In this challenge, we are given a game.bat and a result.bat file. The game.bat is a game(again obviously) which we can't beat because of its nature. Now, the game cat follows a very specific gameplay. First it calls intro which calls battle1 which then calls battle2 and finally battle3. If you survive these 3, it calls victory. Now victory is this
+```sh
+:victory
+set "full=%frag1%%frag2%%frag3%"
+set "self=%~f0"
+set "hash="
+for /f "skip=1 tokens=1" %%H in ('certutil -hashfile "%self%" SHA256') do (
+    call set "hash=%%H"
+    goto result
+)
+
+:result
+call result.bat !full! !hash!
+exit /b
+```
+So, it basically checks its current hash with a hash stored in result.bat. But, what it essentially does is it calls 
+```sh
+result.bat "Some string" !its_own_hash!
+```
+Also, looking into result.bat with nano, we see some traces of the string "unlocktheduck". We calculate the hash of the given file, which is "8392dcc7b6fdebd5a70211c1e21497a553b31f2c70408b772c4a313615df7b60".
+```
+result.bat "unlocktheduck" 8392dcc7b6fdebd5a70211c1e21497a553b31f2c70408b772c4a313615df7b60
+```
+Oh, also, I used wine for rev for the first time. So, yay ig.
+
+## Flag - v1t{p4tch_th3_b4tch_t0_g3t_th3_s3cr3t_3nd1ng}
+
